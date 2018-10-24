@@ -30,7 +30,7 @@ typedef struct Result
 	GHTTPResult result;
 } Result;
 
-static int pendingRequests;
+static gsi_iptr pendingRequests;
 static Result results[MAX_REQUESTS];
 
 static gsi_char * stateStrings[] =
@@ -111,7 +111,7 @@ static GHTTPBool CompletedCallback
 	void * param
 )
 {
-	int index = (int)param;
+	gsi_iptr index = (gsi_iptr)param;
 
 	pendingRequests--;
 
@@ -126,9 +126,9 @@ static GHTTPBool CompletedCallback
 	// Check the result and print out some info.
 	////////////////////////////////////////////
 	if(result == GHTTPSuccess)
-		_tprintf(_T("%d finished\n"), index);
+		_tprintf(_T(GSI_PTR_PRId " finished\n"), index);
 	else
-		_tprintf(_T("%d failed: %s\n"), index, resultStrings[result]);
+		_tprintf(_T(GSI_PTR_PRId " failed: %s\n"), index, resultStrings[result]);
 
 	// Don't free this buffer, its from the stack.
 	//////////////////////////////////////////////
@@ -155,11 +155,11 @@ static void ProgressCallback
 	void * param
 )
 {
-	int index = (int)param;
+	gsi_iptr index = (gsi_iptr)param;
 
 	// Show the current state.
 	//////////////////////////
-	_tprintf(_T("%d state: %s"), index, stateStrings[state]);
+	_tprintf(_T(GSI_PTR_PRId " state: %s"), index, stateStrings[state]);
 
 	// If we're receiving the file, show the progress.
 	//////////////////////////////////////////////////
@@ -168,9 +168,9 @@ static void ProgressCallback
 		// Display based on if we know the total size.
 		//////////////////////////////////////////////
 		if(totalSize != -1)
-			_tprintf(_T(" (%d / %d bytes)\n"), bytesReceived, totalSize);
+			_tprintf(_T(" (" GHTTP_PRI_COUNT " / " GHTTP_PRI_COUNT " bytes)\n"), bytesReceived, totalSize);
 		else
-			_tprintf(_T(" (%d bytes)\n"), bytesReceived);
+			_tprintf(_T(" (" GHTTP_PRI_COUNT " bytes)\n"), bytesReceived);
 	}
 	else
 		_tprintf(_T("\n"));

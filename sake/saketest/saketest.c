@@ -671,7 +671,7 @@ static GHTTPBool DownloadCompletedCallback(GHTTPRequest request, GHTTPResult res
 		return GHTTPTrue;
 	}
 
-	printf("File Download: Downloaded %d byte file\n", bufferLen);
+	printf("File Download: Downloaded " GHTTP_PRI_COUNT " byte file\n", bufferLen);
  
 	return GHTTPTrue;
 }

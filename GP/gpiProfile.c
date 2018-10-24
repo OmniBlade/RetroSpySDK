@@ -1130,7 +1130,7 @@ gpiAddToBlockedList(
 {
     GPIConnection * iconnection = (GPIConnection*)*connection;
     GPIProfile * profile;
-    int index;
+    gsi_iptr index;
 
     // Check if profile already in list
     ///////////////////////////////////
@@ -1154,11 +1154,7 @@ gpiAddToBlockedList(
             freeclear(profile->buddyStatus);
             iconnection->profileList.numBuddies--;
             assert(iconnection->profileList.numBuddies >= 0);
-#ifndef _PS2
-            gpiProfileMap(connection, gpiFixBuddyIndices, (void *)(unsigned long)index);
-#else
             gpiProfileMap(connection, gpiFixBuddyIndices, (void *)index);
-#endif
         }
         if (profile->buddyStatusInfo)
         {
@@ -1176,11 +1172,7 @@ gpiAddToBlockedList(
 
             iconnection->profileList.numBuddies--;
             assert(iconnection->profileList.numBuddies >= 0);
-#ifndef _PS2
-            gpiProfileMap(connection, gpiFixBuddyIndices, (void *)(unsigned long)index);
-#else
             gpiProfileMap(connection, gpiFixBuddyIndices, (void *)index);
-#endif
         }
     }
 
@@ -1221,11 +1213,7 @@ gpiFixBlockIndices(
   void * data
 )
 {
-#ifndef _PS2
-    int baseIndex = (int)(unsigned long)data;
-#else
-    int baseIndex = (int)data;
-#endif
+    gsi_iptr baseIndex = (gsi_iptr)data;
 
     GSI_UNUSED(connection);
 
@@ -1242,7 +1230,7 @@ gpiRemoveFromBlockedList(
 {
     GPIConnection * iconnection = (GPIConnection*)*connection;
     GPIProfile * profile;
-    int index;
+    gsi_iptr index;
 
     // Grab the profile if already in list
     //////////////////////////////////////
@@ -1255,11 +1243,7 @@ gpiRemoveFromBlockedList(
         iconnection->profileList.numBlocked--;
         index = profile->blockIndex;
 
-#ifndef _PS2
-        gpiProfileMap(connection, gpiFixBlockIndices, (void *)(unsigned long)index);
-#else
         gpiProfileMap(connection, gpiFixBlockIndices, (void *)index);
-#endif
     }
    
     // NOTE: There is no callback for this function simply in order to remain consistent

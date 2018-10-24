@@ -261,8 +261,6 @@
 	#define GSI_LITTLE_ENDIAN
 #endif
 
-
-
 #include <ctype.h>
 
 #if defined(_MACOSX) || defined (_IPHONE)
@@ -368,6 +366,20 @@ typedef int               gsi_bool;
 #define GSI_MIN_I64     (-9223372036854775807 - 1)
 #define GSI_MAX_I64       9223372036854775807
 #define GSI_MAX_U64       0xffffffffffffffffui64
+#endif
+
+// Build system needs to supply this define to get correct ptr conversion sized integer.
+// Assumes 32bit otherwise.
+#if defined(GS_PTR_SIZE) && (GS_PTR_SIZE == 8)
+	typedef long long gsi_iptr;
+	typedef unsigned long long gsi_uptr;
+#define GSI_PTR_PRId "%lld"
+#define GSI_PTR_PRIu "%llu"
+#else
+	typedef int gsi_iptr;
+	typedef unsigned int gsi_uptr;
+#define GSI_PTR_PRId "%d"
+#define GSI_PTR_PRIu "%u"
 #endif
 
 #ifdef __cplusplus

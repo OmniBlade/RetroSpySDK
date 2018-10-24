@@ -967,11 +967,7 @@ gpiFixBuddyIndices(
   void * data
 )
 {
-#ifndef _PS2
-	int baseIndex = (int)(unsigned long)data;
-#else
-	int baseIndex = (int)data;
-#endif
+	gsi_iptr baseIndex = (gsi_iptr)data;
 
 	GSI_UNUSED(connection);
 

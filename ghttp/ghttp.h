@@ -62,8 +62,10 @@ typedef enum
 /////////////
 #if (GSI_MAX_INTEGRAL_BITS >= 64)
 typedef gsi_i64  GHTTPByteCount;
+#define GHTTP_PRI_COUNT "%lld"
 #else
 typedef gsi_i32  GHTTPByteCount;
+#define GHTTP_PRI_COUNT "%d"
 #endif
 
 // The current state of an http request.

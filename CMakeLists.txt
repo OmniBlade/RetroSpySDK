@@ -1,6 +1,14 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 project(retrospy VERSION 2.06 LANGUAGES C CXX)
+
+# Fix behavior of CMAKE_C_STANDARD when targeting macOS.
+if (POLICY CMP0025)
+    cmake_policy(SET CMP0025 NEW)
+endif ()
+
+# Request C99 standard where possible. Fixes some pointer to integer warnings with GCC.
+set(CMAKE_C_STANDARD 99)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 
@@ -28,7 +36,7 @@ if(RETROSPY_SERVER_NAME)
 endif()
 
 add_definitions(-DGS_PEER)
-
+add_definitions(-DGS_PTR_SIZE=${CMAKE_SIZEOF_VOID_P})
 if(RS_WINSOCK2)
     add_definitions(-DGSI_WINSOCK2)
 endif()
@@ -54,7 +62,7 @@ add_subdirectory(Voice2)
 
 add_library(retrospy dllmain.c)
 
-target_link_libraries(retrospy SHARED
+target_link_libraries(retrospy PUBLIC
     #rsbrigades
     rscommon
     rschat
